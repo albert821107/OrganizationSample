@@ -6,9 +6,10 @@ tasks:
   build-infra:
     desc: build integration test environment
     cmds: 
-      - task: db-start
-      - task: db-init-db
-      - task: db-init-table
+      # - task: db-start
+      # - task: db-init-db
+      # - task: db-init-table
+      - task: db-init-data
 
   db-start:
     desc: start mssql at local
@@ -16,18 +17,25 @@ tasks:
       - docker-compose -f docker-compose.dev.yml up -d mssql
 
   db-init-db:
-    desc: create mssql database ,schema and data
+    desc: create mssql database
     deps: [db-start]
     cmds:
-      - docker cp ./sample.sql sample-db:/sample.sql
+      - docker cp ./Data/sample.sql sample-db:/sample.sql
       - docker exec sample-db /opt/mssql-tools/bin/sqlcmd -S sample-db -U sa -P Sample01 -i ./sample.sql
+      - timeout 5
 
-  db-init-table :
-    desc: create mssql database ,schema and data
+  db-init-table:
+    desc: create mssql table_schema
     deps: [db-init-db]
     cmds:
-      - docker cp ./PolicyHolder.sql sample-db:/PolicyHolder.sql
-      - docker cp ./PolicyHolder_BinaryTree.sql sample-db:/PolicyHolder_BinaryTree.sql
-       
+      - docker cp ./Data/PolicyHolder.sql sample-db:/PolicyHolder.sql
+      - docker cp ./Data/PolicyHolder_BinaryTree.sql sample-db:/PolicyHolder_BinaryTree.sql
       - docker exec sample-db /opt/mssql-tools/bin/sqlcmd -S sample-db -U sa -P Sample01 -i ./PolicyHolder.sql
       - docker exec sample-db /opt/mssql-tools/bin/sqlcmd -S sample-db -U sa -P Sample01 -i ./PolicyHolder_BinaryTree.sql
+
+  db-init-data:
+    desc: insert mssql data
+    # deps: [db-init-table]
+    cmds:
+      - docker cp ./Data/data.sql sample-db:/data.sql
+      - docker exec sample-db /opt/mssql-tools/bin/sqlcmd -S sample-db -U sa -P Sample01 -i ./data.sql
