@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  integration-test:
+  sample:
 
 secrets:
   my_access_key:
@@ -9,55 +9,13 @@ secrets:
   my_secret_key:
     external: true
 services:  
-  db:
-    image: 217091594600.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-integration-test:mssql-server-2019
-    container_name: presale-activity-db
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sample-db
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Ptc12876266
+      - SA_PASSWORD=Sample01
     ports:
       - 1433:1433
     networks:
-      - integration-test
-  redis6379:
-    image: 217091594600.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-integration-test:redis
-    container_name: presale-activity-redis6379
-    command : --port 6379
-    ports:
-      - 6379:6379
-    volumes:
-      - ./Feeds/Redis/6379:/data
-    networks:
-      - integration-test
-  redis6380:
-    image: 217091594600.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-integration-test:redis
-    container_name: presale-activity-redis6380
-    command : --port 6380
-    ports:
-      - 6380:6380
-    volumes:
-      - ./Feeds/Redis/6380:/data
-    networks:
-      - integration-test
-  redis6381:
-    image: 217091594600.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-integration-test:redis
-    container_name: presale-activity-redis6381
-    command : --port 6381
-    ports:
-      - 6381:6381
-    volumes:
-      - ./Feeds/Redis/6381:/data
-    networks:
-      - integration-test
-  localstack-s3:
-    image: 217091594600.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-integration-test:localstack
-    container_name: presale-activity-localstack-s3
-    privileged: true
-    ports:
-      - "4566:4566"
-    environment:
-      - SERVICES=s3
-      - AWS_DEFAULT_REGION=ap-northeast-1
-      - DEBUG=1
-    networks:
-      - integration-test
+      - sample
