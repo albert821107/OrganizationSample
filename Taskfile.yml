@@ -1,0 +1,73 @@
+# Taskfile.yml
+
+version: "3"
+
+tasks:
+  build-integration-test-infra:
+    desc : build integration test environment
+    cmds : 
+      - task : db-start
+      - task : redis-start
+      - task : s3-start
+      - task : db-init
+      - task : s3-init
+
+  db-start:
+    desc: start mssql at local
+    cmds:
+      - docker-compose -f docker-compose.dev.yml up -d db
+
+  redis-start:
+    desc: start redis at local
+    cmds:
+      - docker-compose -f docker-compose.dev.yml up -d redis6379
+      - docker-compose -f docker-compose.dev.yml up -d redis6380
+      - docker-compose -f docker-compose.dev.yml up -d redis6381
+
+  s3-start :
+    desc: start s3 at local
+    cmds :
+      - docker-compose -f docker-compose.dev.yml up -d localstack-s3
+
+  db-init :
+    desc: create mssql database ,schema and data
+    deps: [db-start]
+    cmds:
+      - docker cp ./Feeds/DB/OPMain/OPMain.sql presale-activity-db:/OPMain.sql
+      - docker exec presale-activity-db /opt/mssql-tools/bin/sqlcmd -S db -U sa -P Ptc12876266 -i ./OPMain.sql
+
+      - docker cp ./Feeds/DB/OPMain/InsertPersonalTransactionRecordTestData.sql presale-activity-db:/OPMainInsertPersonalTransactionRecordTestData.sql
+      - docker exec presale-activity-db /opt/mssql-tools/bin/sqlcmd -S db -U sa -P Ptc12876266 -i ./OPMainInsertPersonalTransactionRecordTestData.sql
+
+      - docker cp ./Feeds/DB/OPMain/CompareString.sql presale-activity-db:/CompareString.sql
+      - docker exec presale-activity-db /opt/mssql-tools/bin/sqlcmd -S db -U sa -P Ptc12876266 -i ./CompareString.sql
+  
+      - docker cp ./Feeds/DB/OPSubscription/OPSubscription.sql presale-activity-db:/OPSubscription.sql
+      - docker exec presale-activity-db /opt/mssql-tools/bin/sqlcmd -S db -U sa -P Ptc12876266 -i ./OPSubscription.sql
+
+      - docker cp ./Feeds/DB/OPSubscription/Subscribe.sql presale-activity-db:/Subscribe.sql
+      - docker exec presale-activity-db /opt/mssql-tools/bin/sqlcmd -S db -U sa -P Ptc12876266 -i ./Subscribe.sql
+
+      - docker cp ./Feeds/DB/OPPresale/OPPresale.sql presale-activity-db:/OPPresale.sql
+      - docker exec presale-activity-db /opt/mssql-tools/bin/sqlcmd -S db -U sa -P Ptc12876266 -i ./OPPresale.sql
+    
+      - docker cp ./Feeds/DB/OPPresale/InsertPersonalTransactionRecordTestData.sql presale-activity-db:/OPPresaleInsertPersonalTransactionRecordTestData.sql
+      - docker exec presale-activity-db /opt/mssql-tools/bin/sqlcmd -S db -U sa -P Ptc12876266 -i ./OPPresaleInsertPersonalTransactionRecordTestData.sql
+
+  s3-init:
+    desc: init s3 bucket for integration test
+    cmds:
+      - aws --endpoint-url=http://localhost:4566 s3 mb s3://integration-test
+      - aws --endpoint-url=http://localhost:4566 s3 mb s3://setoptestdeploy
+      - aws --endpoint-url=http://localhost:4566 s3 cp ./Feeds/S3Master/ActivityItemCategory/v.0000000674.json s3://integration-test/ActivityItemCategory/
+      - aws --endpoint-url=http://localhost:4566 s3 cp ./Feeds/S3Master/Banner/v.0000000588.json s3://integration-test/Banner/
+      - aws --endpoint-url=http://localhost:4566 s3 cp ./Feeds/S3Master/MarketStore/v.0000000036.json s3://integration-test/MarketStore/
+      - aws --endpoint-url=http://localhost:4566 s3 cp ./Feeds/S3Master/PageContent/v.0000000606.json s3://integration-test/PageContent/
+      - aws --endpoint-url=http://localhost:4566 s3 cp ./Feeds/S3Master/PresaleActivityItem/v.0000000612.json s3://integration-test/PresaleActivityItem/
+  
+  #as required
+  db-scripter :
+    desc: copy db-schema by mssql-scripter into local
+    cmds:
+      - mssql-scripter -S 'sd4lab1' -U 'sa' -P 'Ptc12876266' -d 'OPMain' --display-progress -f C:\DataBase\scripter\sd4lab1\OPMain.sql
+      - mssql-scripter -S 'sd4lab1' -U 'sa' -P 'Ptc12876266' -d 'OPMain' --display-progress  --include-objects CompareString --data-only -f C:\DataBase\scripter\sd4lab1\CompareString.sql    
