@@ -17,10 +17,6 @@ tasks:
   db-init :
     desc: create mssql database ,schema and data
     deps: [db-start]
-    
-  #as required
-  db-scripter :
-    desc: copy db-schema by mssql-scripter into local
     cmds:
-      - mssql-scripter -S 'sd4lab1' -U 'sa' -P 'Ptc12876266' -d 'OPMain' --display-progress -f C:\DataBase\scripter\sd4lab1\OPMain.sql
-      - mssql-scripter -S 'sd4lab1' -U 'sa' -P 'Ptc12876266' -d 'OPMain' --display-progress  --include-objects CompareString --data-only -f C:\DataBase\scripter\sd4lab1\CompareString.sql    
+      - docker cp ./sample.sql sample-db:/sample.sql
+      - docker exec sample-db /opt/mssql-tools/bin/sqlcmd -S sample-db -U sa -P Sample01 -i ./sample.sql
