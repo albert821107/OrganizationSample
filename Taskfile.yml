@@ -6,9 +6,9 @@ tasks:
   build-infra:
     desc: build integration test environment
     cmds: 
-    #  - task: db-start
-   #   - task: db-init-db
-    #  - task: db-init-table
+      - task: db-start
+      - task: db-init-db
+      - task: db-init-table
       - task: db-init-data
 
   db-start:
@@ -35,7 +35,7 @@ tasks:
 
   db-init-data:
     desc: insert mssql data
-   # deps: [db-init-table]
+    deps: [db-init-table]
     cmds:
       - docker cp ./Data/data.sql sample-db:/data.sql
       - docker exec sample-db /opt/mssql-tools/bin/sqlcmd -S sample-db -U sa -P Sample01 -i ./data.sql
