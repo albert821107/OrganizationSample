@@ -8,7 +8,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[PolicyHolder_BinaryTree](
-	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id] [int] NOT NULL,
 	[policyholder_code] [varchar](10) NOT NULL,
 	[left_child_id] [int] NULL,
 	[right_child_id] [int] NULL,

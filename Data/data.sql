@@ -12,16 +12,35 @@ VALUES
     ('I233445564','Olivia', '2023-01-09', 'B112243345'),
     ('J123456789','Emily', '2023-01-10', 'B112243345');
 	
--- 插入 PolicyHolder_BinaryTree 表的資料，並使用 code 的值作為 policyholder_code，並保持 left_child_id 和 right_child_id 不變
-INSERT INTO sample..PolicyHolder_BinaryTree (policyholder_code, left_child_id, right_child_id)
+INSERT INTO sample..PolicyHolder_BinaryTree(id , left_child_id , policyholder_code , right_child_id)
 VALUES
-    ((SELECT code FROM PolicyHolder WHERE name = 'John'), 1, 2),
-    ((SELECT code FROM PolicyHolder WHERE name = 'David'), 3, 4),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Mary'), 5, 6),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Emma'), 7, 8),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Alice'), 9, 10),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Tom'), 11, 12),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Michael'), 13, 14),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Sophia'), 15, 16),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Olivia'), 17, 18),
-    ((SELECT code FROM PolicyHolder WHERE name = 'Emily'), 19, 20);
+    (1 , NULL, 'A123456789', NULL),
+    (2 , NULL, 'B112243345', NULL),
+    (3 , NULL, 'C233445564', NULL),
+    (4 , NULL, 'D123456789', NULL),
+    (5 , NULL, 'E112233445', NULL),
+    (6 , NULL, 'F233445564', NULL),
+    (7 , NULL, 'G123456789', NULL),
+    (8 , NULL, 'H112433445', NULL),
+    (9 , NULL, 'I233445564', NULL),
+    (10 , NULL, 'J123456789', NULL);
+
+UPDATE sample..PolicyHolder_BinaryTree
+SET left_child_id = 2 , right_child_id = 3
+WHERE policyholder_code = 'A123456789'
+
+UPDATE sample..PolicyHolder_BinaryTree
+SET left_child_id = 4 , right_child_id = 5
+WHERE policyholder_code = 'B112243345'
+
+UPDATE sample..PolicyHolder_BinaryTree
+SET left_child_id = 6 , right_child_id = 7
+WHERE policyholder_code = 'C233445564'
+
+UPDATE sample..PolicyHolder_BinaryTree
+SET left_child_id = 8 , right_child_id = 9
+WHERE policyholder_code = 'D123456789'
+
+UPDATE sample..PolicyHolder_BinaryTree
+SET left_child_id = 10
+WHERE policyholder_code = 'E112233445'
