@@ -3,7 +3,7 @@
 version: "3"
 
 tasks:
-  build-infra:
+  build:
     desc: build integration test environment
     cmds: 
       - task: db-start
