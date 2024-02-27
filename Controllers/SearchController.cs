@@ -16,7 +16,7 @@ public class SearchController : ControllerBase
     {
         List<PolicyHolder> policyHolders = new List<PolicyHolder>();
 
-        string connectionString = "data source=127.0.0.1;initial catalog=sample;persist security info=True;user id=sa;password=Sample01;multipleactiveresultsets=True;";
+        string connectionString = "data source=127.0.0.1;initial catalog=sample;persist security info=True;user id=sa;password=Sample01;TrustServerCertificate=true;";
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
@@ -47,7 +47,7 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetWeatherForecastById")]
-    public WeatherForecast SearchTopPolicyHolder(int id)
+    public List<PolicyHolder> SearchTopPolicyHolder(int id)
     {
         return null;
     }
