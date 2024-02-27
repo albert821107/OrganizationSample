@@ -1,8 +1,8 @@
 ﻿namespace OrganizationSample;
 
-public class PolicyHolder
+public class PolicyHolderViewModel
 {
-    public PolicyHolder() { }
+    public PolicyHolderViewModel() { }
 
     /// <summary>
     /// 保戶編號
@@ -27,11 +27,11 @@ public class PolicyHolder
     /// <summary>
     /// 左樹
     /// </summary>
-    public PolicyHolder? LeftTree { get; set; }
+    public List<PolicyHolder>? LeftTree { get; set; }
 
     /// <summary>
     /// 右樹
     /// </summary>
-    public PolicyHolder? RightTree { get; set; }
+    public List<PolicyHolder>? RightTree { get; set; }
 
 }
