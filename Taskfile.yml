@@ -10,7 +10,7 @@ tasks:
       - task: db-init-db
       - task: db-init-table
       - task: db-init-data
-
+  
   db-start:
     desc: start mssql at local
     cmds:

@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <DockerfileRunArguments>--network=organizationsample_sample</DockerfileRunArguments>
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
