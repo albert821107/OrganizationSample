@@ -16,7 +16,7 @@ public class SearchController : ControllerBase
     {
         List<PolicyHolder> policyHolders = new List<PolicyHolder>();
 
-        string connectionString = "data source=sd4lab2;initial catalog=OPTrade;persist security info=True;user id=sa;password=Ptc12876266;multipleactiveresultsets=True;";
+        string connectionString = "data source=127.0.0.1;initial catalog=sample;persist security info=True;user id=sa;password=Sample01;multipleactiveresultsets=True;";
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
