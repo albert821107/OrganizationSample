@@ -27,11 +27,11 @@ public class PolicyHolderViewModel
     /// <summary>
     /// 左樹
     /// </summary>
-    public List<PolicyHolder>? LeftTree { get; set; }
+    public PolicyHolder? LeftTree { get; set; }
 
     /// <summary>
     /// 右樹
     /// </summary>
-    public List<PolicyHolder>? RightTree { get; set; }
+    public PolicyHolder? RightTree { get; set; }
 
 }
